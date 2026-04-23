@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Pakistan Income Tax Calculator 2024-25 | FBR Slabs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+   /
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.5;
+    }
+    .card-hover {
+      transition: all 0.2s ease;
+    }
+    .card-hover:focus-within {
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+    }
+   
+    @media (max-width: 640px) {
+      .slab-table td, .slab-table th {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 to-white font-sans antialiased">
+
+  <div class="max-w-7xl mx-auto px-4 py-6 md:py-10">
+    
+    <div class="text-center mb-8 md:mb-10">
+      <div class="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-full text-emerald-800 text-sm font-medium mb-3">
+        <i class="fas fa-calculator"></i> 
+        <span>Tax Year 2024-2025 | FBR Salaried Individuals</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold text-emerald-900 tracking-tight">Income Tax Calculator <span class="text-emerald-600">Pakistan</span></h1>
+      <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Calculate your annual & monthly tax liability based on progressive slabs. Real-time results + PDF report.</p>
+    </div>
+
+    
+    <div class="flex flex-col lg:flex-row gap-8">
+     <div class="lg:w-1/2 space-y-6">
+       
+        <div class="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden card-hover">
+          <div class="bg-emerald-700 px-5 py-4 flex items-center gap-3">
+            <i class="fas fa-wallet text-white text-xl"></i>
+            <h2 class="text-xl font-semibold text-white">Income Sources</h2>
+          </div>
+          <div class="p-5 space-y-4">
+           
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-rupee-sign text-emerald-600 text-sm"></i> Monthly Salary (PKR)</label>
+              <input type="number" id="monthlySalary" value="0" min="0" step="1000" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+            </div>
+            
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-chart-line text-emerald-600 text-sm"></i> Other Income (PKR)</label>
+              <input type="number" id="otherIncome" value="0" min="0" step="1000" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+            </div>
+            
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-gift text-emerald-600 text-sm"></i> Annual Bonus (PKR)</label>
+              <input type="number" id="annualBonus" value="0" min="0" step="1000" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+            </div>
+            
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-building text-emerald-600 text-sm"></i> Rental Income (PKR)</label>
+              <input type="number" id="rentalIncome" value="0" min="0" step="1000" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden card-hover">
+          <div class="bg-emerald-800 px-5 py-4 flex items-center gap-3">
+            <i class="fas fa-hand-holding-heart text-white text-xl"></i>
+            <h2 class="text-xl font-semibold text-white">Deductions & Relief</h2>
+          </div>
+          <div class="p-5 space-y-4">
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-receipt text-emerald-600 text-sm"></i> Tax Deductions (PKR)</label>
+              <input type="number" id="taxDeductions" value="0" min="0" step="1000" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+              <p class="text-xs text-gray-500 mt-1">Eligible expenses, investments, or allowances (reduces taxable income).</p>
+            </div>
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-mosque text-emerald-600 text-sm"></i> Zakat Paid (PKR)</label>
+              <input type="number" id="zakatPaid" value="0" min="0" step="500" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+            </div>
+            <div>
+              <label class="flex items-center gap-2 text-gray-700 font-medium mb-1"><i class="fas fa-hand-holding-usd text-emerald-600 text-sm"></i> Donations (PKR)</label>
+              <input type="number" id="donations" value="0" min="0" step="500" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition outline-none">
+            </div>
+          </div>
+        </div>
+        
+        
+        <div class="flex flex-wrap gap-4 justify-between items-center pt-2">
+          <button id="resetBtn" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 px-6 rounded-xl transition flex items-center gap-2 shadow-sm">
+            <i class="fas fa-undo-alt"></i> Reset All
+          </button>
+          <button id="generatePdfBtn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 px-6 rounded-xl transition flex items-center gap-2 shadow-md">
+            <i class="fas fa-file-pdf"></i> Generate PDF Report
+          </button>
+        </div>
+      </div>
+
+      
+      <div class="lg:w-1/2 space-y-6">
+       
+        <div class="bg-white rounded-2xl shadow-xl border-l-8 border-l-emerald-500 overflow-hidden">
+          <div class="bg-emerald-50 px-6 py-4 border-b border-emerald-100">
+            <h2 class="text-xl font-bold text-emerald-800 flex items-center gap-2"><i class="fas fa-chart-simple"></i> Tax Summary</h2>
+          </div>
+          <div class="p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+              <span class="text-gray-600 font-medium">Total Annual Income:</span>
+              <span id="totalAnnualIncomeDisplay" class="text-xl font-bold text-gray-800">PKR 0</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+              <span class="text-gray-600 font-medium">Total Deductions (Zakat+Donations+TaxDeductions):</span>
+              <span id="totalDeductionsDisplay" class="text-base font-semibold text-gray-700">PKR 0</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+              <span class="text-gray-600 font-medium">Taxable Income:</span>
+              <span id="taxableIncomeDisplay" class="text-lg font-semibold text-emerald-800">PKR 0</span>
+            </div>
+            <div class="bg-emerald-50 rounded-xl p-3 my-2 border border-emerald-200">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-emerald-900">Total Tax Due (Annual):</span>
+                <span id="totalTaxDue" class="text-2xl font-extrabold text-emerald-700">PKR 0</span>
+              </div>
+              <div class="flex justify-between items-center mt-1">
+                <span class="text-sm text-gray-600">Monthly Tax Installment:</span>
+                <span id="monthlyTax" class="text-base font-semibold text-gray-800">PKR 0</span>
+              </div>
+              <div class="flex justify-between items-center mt-1">
+                <span class="text-sm text-gray-600">Effective Tax Rate:</span>
+                <span id="effectiveRate" class="text-base font-semibold text-gray-800">0.00%</span>
+              </div>
+            </div>
+            <div class="text-xs text-gray-500 italic mt-2 border-t pt-2">* Calculation based on FBR progressive slabs for salaried persons (tax year 2024-2025).</div>
+          </div>
+        </div>
+
+        
+        <div class="bg-white rounded-2xl shadow-md border border-gray-200">
+          <div class="bg-gray-50 px-5 py-3 rounded-t-2xl">
+            <h3 class="font-semibold text-gray-700 flex items-center gap-1"><i class="fas fa-table-list text-emerald-600"></i> Pakistan Income Tax Slabs 2024-2025 (Salaried)</h3>
+          </div>
+          <div class="p-3 overflow-x-auto">
+            <table class="w-full text-sm slab-table">
+              <thead class="bg-emerald-50 text-emerald-800">
+                <tr><th class="p-2 text-left">Annual Taxable Income</th><th class="p-2 text-left">Rate</th><th class="p-2 text-left">Tax on excess</th></tr>
+              </thead>
+              <tbody class="divide-y">
+                <tr><td class="p-2">Up to PKR 600,000</td><td class="p-2 font-medium">0%</td><td class="p-2">-</td></tr>
+                <tr><td class="p-2">600,001 – 1,200,000</td><td class="p-2">2.5%</td><td class="p-2">Above 600K</td></tr>
+                <tr><td class="p-2">1,200,001 – 2,400,000</td><td class="p-2">12.5%</td><td class="p-2">Above 1.2M</td></tr>
+                <tr><td class="p-2">2,400,001 – 3,600,000</td><td class="p-2">20.0%</td><td class="p-2">Above 2.4M</td></tr>
+                <tr><td class="p-2">Above 3,600,000</td><td class="p-2">30.0%</td><td class="p-2">Above 3.6M</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="text-center text-gray-400 text-xs mt-10 border-t pt-5">
+      <i class="fas fa-calculator"></i> Real-time calculator — all input fields auto-update. Zakat & donations are deducted from total income before tax (as per standard practice).
+    </div>
+  </div>
+
+  <script>
+   
+    
+    const monthlySalaryInput = document.getElementById('monthlySalary');
+    const otherIncomeInput = document.getElementById('otherIncome');
+    const annualBonusInput = document.getElementById('annualBonus');
+    const rentalIncomeInput = document.getElementById('rentalIncome');
+   
+    const taxDeductionsInput = document.getElementById('taxDeductions');
+    const zakatPaidInput = document.getElementById('zakatPaid');
+    const donationsInput = document.getElementById('donations');
+    
+    const totalAnnualIncomeSpan = document.getElementById('totalAnnualIncomeDisplay');
+    const totalDeductionsDisplaySpan = document.getElementById('totalDeductionsDisplay');
+    const taxableIncomeSpan = document.getElementById('taxableIncomeDisplay');
+    const totalTaxDueSpan = document.getElementById('totalTaxDue');
+    const monthlyTaxSpan = document.getElementById('monthlyTax');
+    const effectiveRateSpan = document.getElementById('effectiveRate');
+    
+    function formatNumber(num) {
+      if (num === undefined || num === null) return '0';
+      return Number(num).toLocaleString('en-PK');
+    }
+    
+    function getValidNumber(inputElement) {
+      let val = parseFloat(inputElement.value);
+      if (isNaN(val) || val < 0) {
+        val = 0;
+        if (inputElement.value !== '0') inputElement.value = 0;
+      }
+      return val;
+    }
+    
+    
+    function calculateTax(annualTaxableIncome) {
+      if (annualTaxableIncome <= 0) return 0;
+      let tax = 0;
+     
+      if (annualTaxableIncome <= 600000) {
+        tax = 0;
+      } 
+      else if (annualTaxableIncome <= 1200000) {
+        tax = (annualTaxableIncome - 600000) * 0.025;
+      } 
+      else if (annualTaxableIncome <= 2400000) {
+        tax = 15000 + (annualTaxableIncome - 1200000) * 0.125;
+      } 
+      else if (annualTaxableIncome <= 3600000) {
+        tax = 165000 + (annualTaxableIncome - 2400000) * 0.20;
+      } 
+      else {
+        tax = 405000 + (annualTaxableIncome - 3600000) * 0.30;
+      }
+      return Math.max(0, tax);
+    }
+  
+    function updateAllCalculations() {
+      
+      let monthlySalary = getValidNumber(monthlySalaryInput);
+      let otherIncome = getValidNumber(otherIncomeInput);
+      let annualBonus = getValidNumber(annualBonusInput);
+      let rentalIncome = getValidNumber(rentalIncomeInput);
+      
+      let totalAnnualIncome = (monthlySalary * 12) + otherIncome + annualBonus + rentalIncome;
+    
+      let zakatPaid = getValidNumber(zakatPaidInput);
+      let donations = getValidNumber(donationsInput);
+      let totalDeductions = taxDeductions + zakatPaid + donations;
+      
+      let taxableIncome = Math.max(0, totalAnnualIncome - totalDeductions);
+      
+      
+      let totalTax = calculateTax(taxableIncome);
+      let monthlyTax = totalTax / 12;
+      
+       * 100, avoid division by zero
+      let effectiveRate = (totalAnnualIncome > 0) ? (totalTax / totalAnnualIncome) * 100 : 0;
+      
+      totalAnnualIncomeSpan.innerText = `PKR ${formatNumber(totalAnnualIncome)}`;
+      totalDeductionsDisplaySpan.innerText = `PKR ${formatNumber(totalDeductions)}`;
+      taxableIncomeSpan.innerText = `PKR ${formatNumber(taxableIncome)}`;
+      totalTaxDueSpan.innerText = `PKR ${formatNumber(totalTax)}`;
+      monthlyTaxSpan.innerText = `PKR ${formatNumber(monthlyTax)}`;
+      effectiveRateSpan.innerText = `${effectiveRate.toFixed(2)}%`;
+    }
+    
+    
+    function resetAllFields() {
+      monthlySalaryInput.value = '0';
+      otherIncomeInput.value = '0';
+      annualBonusInput.value = '0';
+      rentalIncomeInput.value = '0';
+      taxDeductionsInput.value = '0';
+      zakatPaidInput.value = '0';
+      donationsInput.value = '0';
+     
+      updateAllCalculations();
+    }
+  
+    async function generatePDFReport() {
+     
+      const monthlySalary = getValidNumber(monthlySalaryInput);
+      const otherIncome = getValidNumber(otherIncomeInput);
+      const annualBonus = getValidNumber(annualBonusInput);
+      const rentalIncome = getValidNumber(rentalIncomeInput);
+      const taxDeductions = getValidNumber(taxDeductionsInput);
+      const zakatPaid = getValidNumber(zakatPaidInput);
+      const donations = getValidNumber(donationsInput);
+      
+      const totalAnnual = (monthlySalary * 12) + otherIncome + annualBonus + rentalIncome;
+      const totalDeductionsVal = taxDeductions + zakatPaid + donations;
+      const taxableInc = Math.max(0, totalAnnual - totalDeductionsVal);
+      const totalTaxVal = calculateTax(taxableInc);
+      const monthlyTaxVal = totalTaxVal / 12;
+      const effectiveRateVal = (totalAnnual > 0) ? (totalTaxVal / totalAnnual) * 100 : 0;
+      
+     
+      const now = new Date();
+      const dateTimeStr = now.toLocaleString('en-PK', { dateStyle: 'full', timeStyle: 'medium' });
+    
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    
+      doc.setFillColor(34, 139, 34); 
+      doc.setFont("helvetica");
+    
+      doc.setFontSize(22);
+      doc.setTextColor(20, 83, 45);
+      doc.text("Pakistan Income Tax Report", 20, 25);
+      doc.setFontSize(11);
+      doc.setTextColor(80, 80, 80);
+      doc.text(`Generated on: ${dateTimeStr}`, 20, 35);
+      doc.line(20, 40, 190, 40);
+      
+    
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 0);
+      doc.text("Income Breakdown", 20, 52);
+      doc.setFontSize(10);
+      doc.text(`Monthly Salary (x12): PKR ${formatNumber(monthlySalary * 12)}`, 25, 62);
+      doc.text(`Other Income: PKR ${formatNumber(otherIncome)}`, 25, 70);
+      doc.text(`Annual Bonus: PKR ${formatNumber(annualBonus)}`, 25, 78);
+      doc.text(`Rental Income: PKR ${formatNumber(rentalIncome)}`, 25, 86);
+      doc.setFontSize(11);
+      doc.setTextColor(0, 60, 0);
+      doc.text(`Total Annual Income: PKR ${formatNumber(totalAnnual)}`, 20, 98);
+    
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(14);
+      doc.text("Deductions & Zakat", 20, 114);
+      doc.setFontSize(10);
+      doc.text(`Tax Deductions: PKR ${formatNumber(taxDeductions)}`, 25, 124);
+      doc.text(`Zakat Paid: PKR ${formatNumber(zakatPaid)}`, 25, 132);
+      doc.text(`Donations: PKR ${formatNumber(donations)}`, 25, 140);
+      doc.setFontSize(11);
+      doc.setTextColor(100, 70, 20);
+      doc.text(`Total Deductions: PKR ${formatNumber(totalDeductionsVal)}`, 20, 152);
+      
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(14);
+      doc.text("Tax Liability (FBR 2024-25 Slabs)", 20, 168);
+      doc.setFontSize(11);
+      doc.text(`Taxable Income: PKR ${formatNumber(taxableInc)}`, 25, 180);
+      doc.setTextColor(20, 80, 30);
+      doc.setFontSize(13);
+      doc.text(`Annual Tax Due: PKR ${formatNumber(totalTaxVal)}`, 25, 194);
+      doc.setFontSize(11);
+      doc.setTextColor(0);
+      doc.text(`Monthly Tax Installment: PKR ${formatNumber(monthlyTaxVal)}`, 25, 206);
+      doc.text(`Effective Tax Rate: ${effectiveRateVal.toFixed(2)}%`, 25, 216);
+      doc.setFontSize(9);
+      doc.setTextColor(80);
+      doc.text("Tax Slabs applied (progressive): up to 600k:0%, 600k-1.2M:2.5%, 1.2M-2.4M:12.5%, 2.4M-3.6M:20%, >3.6M:30%", 20, 232);
+      doc.text("Note: Zakat & donations are fully deducted from total income before tax calculation (as per general IT rules).", 20, 245);
+      
+      doc.setFontSize(8);
+      doc.setTextColor(130);
+      doc.text("This is a system generated tax estimation report based on provided inputs.", 20, 270);
+      doc.text("© Pakistan Income Tax Calculator | Not an official tax filing document.", 20, 278);
+      
+      
+      doc.save(`Tax_Report_${now.toISOString().slice(0,19).replace(/:/g, '-')}.pdf`);
+    }
+    
+   
+    const allInputs = [
+      monthlySalaryInput, otherIncomeInput, annualBonusInput, rentalIncomeInput,
+      taxDeductionsInput, zakatPaidInput, donationsInput
+    ];
+    allInputs.forEach(input => {
+      input.addEventListener('input', function(e) {
+       
+        let val = parseFloat(this.value);
+        if (isNaN(val)) val = 0;
+        if (val < 0) {
+          this.value = 0;
+        }
+        updateAllCalculations();
+      });
+      
+      input.addEventListener('blur', function() {
+        let val = parseFloat(this.value);
+        if (isNaN(val)) this.value = 0;
+        else if (val < 0) this.value = 0;
+        updateAllCalculations();
+      });
+    });
+    
+    const resetBtn = document.getElementById('resetBtn');
+    resetBtn.addEventListener('click', () => {
+      resetAllFields();
+    });
+    
+    const pdfBtn = document.getElementById('generatePdfBtn');
+    pdfBtn.addEventListener('click', () => {
+      generatePDFReport();
+    });
+    
+    updateAllCalculations();
+  </script>
+</body>
+</html>
